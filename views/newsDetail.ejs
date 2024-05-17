@@ -27,10 +27,10 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="#" style="display: flex; align-items: center;">
+        <a class="navbar-brand" href="/" style="display: flex; align-items: center;">
             <img src="/msn_logo_icon_181375.png" alt="Logo" style="height: 30px;">
             <h1 style="margin: 0; margin-left: 5px; font-size: 25px">MSN</h1>
-        </a>        
+        </a>       
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -143,6 +143,48 @@
             });
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('likeButton').addEventListener('click', function () {
+                if (<%= user ? 'true' : 'false' %>) {
+                    fetch('/like', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ newsId: '<%= news.idnews %>' })
+                    }).then(response => {
+                        if (response.ok) {
+                            this.classList.toggle('liked');
+                        }
+                    });
+                }
+            });
     
+            document.getElementById('dislikeButton').addEventListener('click', function () {
+                if (<%= user ? 'true' : 'false' %>) {
+                    fetch('/dislike', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ newsId: '<%= news.idnews %>' })
+                    }).then(response => {
+                        if (response.ok) {
+                            this.classList.toggle('disliked');
+                        }
+                    });
+                }
+            });
+    
+            var cardForms = document.querySelectorAll('.card-form');
+            cardForms.forEach(function (form) {
+                form.addEventListener('click', function () {
+                    var url = form.getAttribute('action');
+                    window.location.href = url;
+                });
+            });
+        });
+    </script>    
 </body>
 </html>

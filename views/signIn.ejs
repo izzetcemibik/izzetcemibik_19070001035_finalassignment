@@ -43,32 +43,24 @@
           </ul>
         </div>
       </nav> 
-    <div class="container">
-        <div class="row justify-content-center mt-5">
-            <div class="col-md-4">
+      <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <!-- Google ile Giriş Yap Butonu -->
-                        <button type="button" class="btn btn-primary btn-block mb-3">Google ile Giriş Yap</button>
-                        
-                        <!-- Email Girişi -->
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="Email">
-                        </div>
-                        
-                        <!-- Şifre Girişi -->
-                        <div class="form-group">
-                            <label for="password">Şifre</label>
-                            <input type="password" class="form-control" id="password" placeholder="Şifre">
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <!-- Giriş Yap Butonu -->
-                            <button type="button" class="btn btn-success">Giriş Yap</button>
-                            
-                            <!-- Üye Ol Butonu -->
+                        <h3 class="card-title">Giriş Yap</h3>
+                        <form action="/signIn" method="POST">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Şifre</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Giriş Yap</button>
                             <button type="button" class="btn btn-info" onclick="window.location.href='/signUp'">Üye Ol</button>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>

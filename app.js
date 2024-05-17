@@ -1,4 +1,4 @@
-const express = require('express'); 
+/*const express = require('express'); 
 
 const app = express(); 
 const mysql = require('mysql');
@@ -99,4 +99,189 @@ app.listen(PORT, (error) =>{
 	else
 		console.log("Error occurred, server can't start", error); 
 	} 
-); 
+); */
+
+const express = require('express');
+const mysql = require('mysql');
+const session = require('express-session');
+const bcrypt = require('bcrypt');
+const app = express();
+const PORT = 8080;
+
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
+
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '12345Izo',
+    database: 'izzetcemibik_19070001035_finalassignment'
+});
+
+connection.connect((err) => {
+    if (err) {
+        console.error('Error connecting to MySQL database:', err);
+        return;
+    }
+    console.log('Connected to MySQL database');
+});
+
+app.use(session({
+    secret: 'secretKey',
+    resave: false,
+    saveUninitialized: true
+}));
+
+// Middleware for authentication check
+function isAuthenticated(req, res, next) {
+    if (req.session.user) {
+        next();
+    } else {
+        res.redirect('/signIn');
+    }
+}
+
+// Other route handlers go here...
+
+app.get('/', (req, res) => {
+    connection.query('SELECT idnews, image, topic, category FROM news', (error, results) => {
+        if (error) {
+            console.error('Error fetching data from MySQL:', error);
+            res.status(500).send('An error occurred while fetching data');
+            return;
+        }
+        const slider = results;
+        const randomNews = shuffleArray(results).slice(0, 2);
+        res.render('home', { slider, randomNews, user: req.session.user });
+    });
+});
+
+const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+};
+
+// Sign In and Sign Up routes
+app.get('/signIn', (req, res) => {
+    res.render('signIn');
+});
+
+app.get('/signUp', (req, res) => {
+    res.render('signUp');
+});
+
+app.post('/signUp', async (req, res) => {
+    const { first_name, last_name, email, password, country, city } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    connection.query('INSERT INTO users (first_name, last_name, email, password, country, city) VALUES (?, ?, ?, ?, ?, ?)', 
+    [first_name, last_name, email, hashedPassword, country, city], (err) => {
+        if (err) {
+            console.error('Error inserting user into MySQL:', err);
+            res.status(500).send('An error occurred while registering');
+            return;
+        }
+        res.redirect('/signIn');
+    });
+});
+
+app.post('/signIn', (req, res) => {
+    const { email, password } = req.body;
+
+    connection.query('SELECT * FROM users WHERE email = ?', [email], async (err, results) => {
+        if (err) {
+            console.error('Error fetching user from MySQL:', err);
+            res.status(500).send('An error occurred while signing in');
+            return;
+        }
+        if (results.length === 0 || !(await bcrypt.compare(password, results[0].password))) {
+            res.send('Incorrect email or password');
+            return;
+        }
+        req.session.user = {
+            id: results[0].id,
+            first_name: results[0].first_name,
+            last_name: results[0].last_name,
+            email: results[0].email
+        };
+        res.redirect('/');
+    });
+});
+
+app.post('/signOut', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Error destroying session:', err);
+            res.status(500).send('An error occurred while signing out');
+            return;
+        }
+        res.redirect('/');
+    });
+});
+app.get('/newsDetail', (req, res) => {
+    // İlgili haberin ID'sini al
+    const newsId = req.query.id;
+
+    // Haberin detaylarını ve diğer haberleri veritabanından al
+    connection.query('SELECT * FROM news WHERE idnews = ?', [newsId], (error, results, fields) => {
+        if (error) {
+            console.error('Error fetching news details from MySQL:', error);
+            res.status(500).send('An error occurred while fetching news details');
+            return;
+        }
+
+        // Seçilen haberin detayları
+        const news = results.length > 0 ? results[0] : null;
+
+        // Diğer haberler
+        connection.query('SELECT * FROM news WHERE idnews != ? ORDER BY RAND() LIMIT 2', [newsId], (error, results, fields) => {
+            if (error) {
+                console.error('Error fetching other news from MySQL:', error);
+                res.status(500).send('An error occurred while fetching other news');
+                return;
+            }
+
+            // Diğer haberleri şablonla birlikte render et
+            res.render('newsDetail', { news, otherNews: results });
+        });
+    });
+});
+
+// Routes that require authentication
+app.post('/like', isAuthenticated, (req, res) => {
+    const userId = req.session.user.id;
+    const { newsId } = req.body;
+
+    connection.query('INSERT INTO likes (user_id, news_id) VALUES (?, ?)', [userId, newsId], (err) => {
+        if (err) {
+            console.error('Error liking the news:', err);
+            res.status(500).send('An error occurred while liking the news');
+            return;
+        }
+        res.send('News liked');
+    });
+});
+
+app.post('/dislike', isAuthenticated, (req, res) => {
+    const userId = req.session.user.id;
+    const { newsId } = req.body;
+
+    connection.query('INSERT INTO dislikes (user_id, news_id) VALUES (?, ?)', [userId, newsId], (err) => {
+        if (err) {
+            console.error('Error disliking the news:', err);
+            res.status(500).send('An error occurred while disliking the news');
+            return;
+        }
+        res.send('News disliked');
+    });
+});
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
+
