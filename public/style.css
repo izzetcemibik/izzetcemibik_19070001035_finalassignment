@@ -4,6 +4,9 @@ body{
 .navbar{
     background-color: #f4f4f2;
 }
+.navbar + div {
+    border-top: 1px solid #ccc;
+}
 .general-div {
     width: 100%; /* Genel div'in genişliği */
     background-color: #f4f4f2; /* Genel div'in arka plan rengi */
@@ -26,4 +29,8 @@ body{
     margin: 2px; /* Menü öğeleri arasındaki boşluk */
     cursor: pointer; /* Menü öğelerine fare imleci ekleyin */
     background-color: #f4f4f2; /* Menü öğelerinin arka plan rengi */
+}
+.slider {
+    display: flex;
+    transition: transform 0.5s ease;
 }
