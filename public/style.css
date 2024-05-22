@@ -1,0 +1,36 @@
+body{
+    background-color: #f4f4f2;
+}
+.navbar{
+    background-color: #f4f4f2;
+}
+.navbar + div {
+    border-top: 1px solid #ccc;
+}
+.general-div {
+    width: 100%; /* Genel div'in genişliği */
+    background-color: #f4f4f2; /* Genel div'in arka plan rengi */
+    padding: 20px; /* Genel div'in iç içe geçme miktarı */
+}
+
+.narrow-div {
+    max-width: 1200px; /* Dar div'in maksimum genişliği */
+    margin: 0 auto; /* Dar div'i merkezlemek için */
+}
+
+.bar {
+    display: flex; /* Menü öğelerini yatay düzende göster */
+}
+
+.menu-item {
+    flex: 1 0 10%; /* Menü öğelerini eşit genişlikte sırala */
+    padding: 5px; /* Menü öğelerinin iç boşluğu */
+    text-align: center; /* Metni ortala */
+    margin: 2px; /* Menü öğeleri arasındaki boşluk */
+    cursor: pointer; /* Menü öğelerine fare imleci ekleyin */
+    background-color: #f4f4f2; /* Menü öğelerinin arka plan rengi */
+}
+.slider {
+    display: flex;
+    transition: transform 0.5s ease;
+}
