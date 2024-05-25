@@ -58,7 +58,10 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <!-- Ayarlar içeriği buraya gelecek -->
+                                    <select id="languageSelect" class="form-control">
+                                        <option value="tr">Türkçe</option>
+                                        <option value="en">English</option>
+                                    </select>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
@@ -74,15 +77,15 @@
         <div class="narrow-div">
             <div class="bar">
                 <div class="menu-item" id="weather">Yükleniyor...</div>
-                <div class="menu-item">Spor</div>
-                <div class="menu-item">Finans</div>
-                <div class="menu-item">Haber</div>
-                <div class="menu-item">Eğlence</div>
-                <div class="menu-item">Astroloji</div>
-                <div class="menu-item">Otomobil</div>
-                <div class="menu-item">Yaşam</div>
-                <div class="menu-item">Hava Durumu</div>
-                <div class="menu-item">Video</div>
+                <div class="menu-item" data-translate="Spor">Spor</div>
+                <div class="menu-item" data-translate="Finans">Finans</div>
+                <div class="menu-item" data-translate="Haber">Haber</div>
+                <div class="menu-item" data-translate="Eğlence">Eğlence</div>
+                <div class="menu-item" data-translate="Astroloji">Astroloji</div>
+                <div class="menu-item" data-translate="Otomobil">Otomobil</div>
+                <div class="menu-item" data-translate="Yaşam">Yaşam</div>
+                <div class="menu-item" data-translate="Hava Durumu">Hava Durumu</div>
+                <div class="menu-item" data-translate="Video">Video</div>
             </div>
         </div>
     </div>
@@ -99,10 +102,12 @@
                         <div class="carousel-inner">
                             <% slider.forEach((slide, index) => { %>
                                 <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
-                                    <img src="<%= slide.image %>" class="d-block w-100" alt="<%= slide.topic %>">
-                                    <div class="carousel-caption d-none d-md-block text-left" >
-                                        <h5 style="background-color: rgba(120, 119, 119, 0.486);"><%= slide.topic %></h5>
-                                    </div>
+                                    <a href="/newsDetail?id=<%= slide.idnews %>">
+                                        <img src="<%= slide.image %>" class="d-block w-100" alt="<%= slide.topic %>">
+                                        <div class="carousel-caption d-none d-md-block text-left">
+                                            <h5 style="background-color: rgba(120, 119, 119, 0.486);"><%= slide.topic %></h5>
+                                        </div>
+                                    </a>
                                 </div>
                             <% }) %>
                         </div>
@@ -140,27 +145,6 @@
         </div>
     </div>
     <script>
-        function slideTo(direction) {
-            const slider = document.querySelector('.carousel-inner');
-            const activeSlide = document.querySelector('.carousel-item.active');
-            const slideWidth = activeSlide.offsetWidth;
-        
-            if (direction === 'next') {
-                slider.scrollLeft += slideWidth;
-            } else if (direction === 'prev') {
-                slider.scrollLeft -= slideWidth;
-            }
-        }
-        
-        document.querySelector('.carousel-control-next').addEventListener('click', function() {
-            slideTo('next');
-        });
-        
-        document.querySelector('.carousel-control-prev').addEventListener('click', function() {
-            slideTo('prev');
-        });
-    </script>
-    <script>
         // Konum bilgisini al
         navigator.geolocation.getCurrentPosition(function(position) {
             var latitude = position.coords.latitude;
@@ -190,12 +174,88 @@
                     console.error('Hata:', error);
                 });
         });
-    </script>
-    <script>
+
         // Login butonuna tıklanınca signInUp sayfasını aç
         document.getElementById('loginButton').addEventListener('click', function() {
             // signInUp sayfasını açmak için window.location.href kullanılır
             window.location.href = '/signIn';
+        });
+
+        // Language switcher
+        document.getElementById('languageSelect').addEventListener('change', function() {
+            const selectedLanguage = this.value;
+            setCookie('language', selectedLanguage, 365);
+            switchLanguage(selectedLanguage);
+        });
+
+        function switchLanguage(language) {
+            const translations = {
+                'tr': {
+                    'Spor': 'Spor',
+                    'Finans': 'Finans',
+                    'Haber': 'Haber',
+                    'Eğlence': 'Eğlence',
+                    'Astroloji': 'Astroloji',
+                    'Otomobil': 'Otomobil',
+                    'Yaşam': 'Yaşam',
+                    'Hava Durumu': 'Hava Durumu',
+                    'Video': 'Video',
+                    'Ara': 'Ara'
+                },
+                'en': {
+                    'Spor': 'Sports',
+                    'Finans': 'Finance',
+                    'Haber': 'News',
+                    'Eğlence': 'Entertainment',
+                    'Astroloji': 'Astrology',
+                    'Otomobil': 'Automobile',
+                    'Yaşam': 'Life',
+                    'Hava Durumu': 'Weather',
+                    'Video': 'Video',
+                    'Ara': 'Search'
+                }
+            };
+            
+            document.querySelectorAll('[data-translate]').forEach(el => {
+                const key = el.getAttribute('data-translate');
+                el.textContent = translations[language][key];
+            });
+
+            document.querySelectorAll('[placeholder]').forEach(el => {
+                const key = el.getAttribute('placeholder');
+                if (translations[language][key]) {
+                    el.setAttribute('placeholder', translations[language][key]);
+                }
+            });
+        }
+
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        function getCookie(name) {
+            const cname = name + "=";
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const ca = decodedCookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(cname) === 0) {
+                    return c.substring(cname.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const language = getCookie('language') || 'tr';
+            document.getElementById('languageSelect').value = language;
+            switchLanguage(language);
         });
     </script>
 </body>
