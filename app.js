@@ -282,12 +282,9 @@ const express = require('express');
 const mysql = require('mysql');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
+const fs = require('fs');
 const app = express();
-const PORT = 8080;
-const ejs = require('ejs'); 
-const query = `requests
-  | where timestamp > ago(30m)`;
-
+const PORT = process.env.PORT || 8080;
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
@@ -453,7 +450,6 @@ app.get('/newsDetail', (req, res) => {
     });
 });
 
-
 // Routes that require authentication
 app.post('/like', isAuthenticated, (req, res) => {
     const userId = req.session.user.id;
@@ -483,12 +479,12 @@ app.post('/dislike', isAuthenticated, (req, res) => {
     });
 });
 
-
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
 app.get('/health', (req, res) => {
     res.status(200).send('OK');
-  });
+});
+
   
