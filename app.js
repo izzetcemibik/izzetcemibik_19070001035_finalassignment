@@ -297,7 +297,10 @@ const connection = mysql.createConnection({
     host: 'izzetcemibikfinaldb.mysql.database.azure.com',
     user: 'izzetcemibik',
     password: '12345Izo',
-    database: 'izzetcemibik_19070001035_finalassignment'
+    database: 'izzetcemibik_19070001035_finalassignment',
+    ssl: {
+        ca: fs.readFileSync(__dirname + '/ssl/BaltimoreCyberTrustRoot.crt.pem')
+    }
 });
 
 connection.connect((err) => {
