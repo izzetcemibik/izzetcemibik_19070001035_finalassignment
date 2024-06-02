@@ -285,14 +285,17 @@ const bcrypt = require('bcrypt');
 const app = express();
 const PORT = 8080;
 const ejs = require('ejs'); 
+const query = `requests
+  | where timestamp > ago(30m)`;
+
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
+    host: 'izzetcemibikfinaldb.mysql.database.azure.com',
+    user: 'izzetcemibik',
     password: '12345Izo',
     database: 'izzetcemibik_19070001035_finalassignment'
 });
