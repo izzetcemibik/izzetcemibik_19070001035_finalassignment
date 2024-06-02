@@ -284,6 +284,7 @@ const session = require('express-session');
 const bcrypt = require('bcrypt');
 const app = express();
 const PORT = 8080;
+const ejs = require('ejs'); 
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
