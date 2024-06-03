@@ -101,7 +101,7 @@ app.listen(PORT, (error) =>{
 	} 
 ); */
 
-/*
+
 const express = require('express');
 const mysql = require('mysql');
 const session = require('express-session');
@@ -114,10 +114,13 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
+    host: 'izzetcemibikfinaldb.mysql.database.azure.com',
+    user: 'izzetcemibik',
     password: '12345Izo',
-    database: 'izzetcemibik_19070001035_finalassignment'
+    database: 'izzetcemibik_19070001035_finalassignment',
+    ssl: {
+        ca: fs.readFileSync(__dirname + '/ssl/BaltimoreCyberTrustRoot.crt.pem')
+    }
 });
 
 connection.connect((err) => {
@@ -277,11 +280,14 @@ app.post('/dislike', isAuthenticated, (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-});*/
+});
+
+
+/*
 const express = require('express');
 const mysql = require('mysql');
 const session = require('express-session');
-
+const bcrypt = require('bcryptjs');
 const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -486,3 +492,4 @@ app.get('/health', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+*/
