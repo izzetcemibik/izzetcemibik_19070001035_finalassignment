@@ -282,7 +282,6 @@ app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 */
-
 const express = require('express');
 const mysql = require('mysql');
 const session = require('express-session');
@@ -491,3 +490,4 @@ app.get('/health', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
