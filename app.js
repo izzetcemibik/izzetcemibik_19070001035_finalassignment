@@ -1,4 +1,4 @@
-const express = require('express'); 
+/*const express = require('express'); 
 
 const app = express(); 
 const mysql = require('mysql');
@@ -99,7 +99,7 @@ app.listen(PORT, (error) =>{
 	else
 		console.log("Error occurred, server can't start", error); 
 	} 
-); 
+); */
 
 /*
 const express = require('express');
@@ -283,7 +283,6 @@ app.listen(PORT, () => {
 });
 */
 
-/*
 const express = require('express');
 const mysql = require('mysql');
 const session = require('express-session');
@@ -492,4 +491,3 @@ app.get('/health', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-*/
