@@ -307,10 +307,10 @@ https.createServer(sslOptions, app).listen(8080, () => {
 });
 
 const connection = mysql.createConnection({
-    host: 'izofinaldb.mysql.database.azure.com',
-    user: 'cemibik',
+    host: 'se3355midtermdb.mysql.database.azure.com',
+    user: 'midtermizzetcemibik',
     password: '12345Izo',
-    database: 'izzetcemibik_19070001035_finalassignment',
+    database: '19070001035_izzetcemibik_midtermdatabase'
 });
 
 connection.connect((err) => {
