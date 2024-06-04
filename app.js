@@ -301,16 +301,10 @@ const connection = mysql.createConnection({
     database: '19070001035_izzetcemibik_midtermdatabase'
 });
 
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
-
-
 connection.connect((err) => {
     if (err) {
         console.error('Error connecting to MySQL database:', err);
-        return;
+        process.exit(1); // Exit if the database connection fails
     }
     console.log('Connected to MySQL database');
 });
