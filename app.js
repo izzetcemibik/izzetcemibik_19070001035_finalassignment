@@ -295,7 +295,7 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
 const sslCertPath = path.join(__dirname, 'certs', 'DigiCertGlobalRootG2.crt.pem');
-
+/*
 const connection = mysql.createConnection({
     host: 'se3355midtermdb.mysql.database.azure.com',
     user: 'midtermizzetcemibik',
@@ -305,7 +305,7 @@ const connection = mysql.createConnection({
         ca: fs.readFileSync(sslCertPath)
     }
 });
-
+*/
 connection.connect((err) => {
     if (err) {
         console.error('Error connecting to MySQL database:', err);
