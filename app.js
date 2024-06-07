@@ -214,19 +214,38 @@ app.post('/search', (req, res) => {
             res.status(500).send('An error occurred while fetching search results');
             return;
         }
-        res.render('search', { searchTerm, results });
+
+        const categoryQuery = `SELECT DISTINCT category FROM news`;
+        connection.query(categoryQuery, (catError, categories) => {
+            if (catError) {
+                console.error('Error fetching categories from MySQL:', catError);
+                res.status(500).send('An error occurred while fetching categories');
+                return;
+            }
+            res.render('search', { searchTerm, results, categories });
+        });
     });
 });
 
-app.get('/categories', (req, res) => {
-    const query = `SELECT DISTINCT category FROM news`;
-    connection.query(query, (error, results) => {
+app.get('/category/:category', (req, res) => {
+    const category = req.params.category;
+    const query = `SELECT idnews, topic, image, category FROM news WHERE category = ?`;
+    connection.query(query, [category], (error, results) => {
         if (error) {
-            console.error('Error fetching categories from MySQL:', error);
-            res.status(500).send('An error occurred while fetching categories');
+            console.error('Error fetching news by category from MySQL:', error);
+            res.status(500).send('An error occurred while fetching news by category');
             return;
         }
-        res.json(results);
+
+        const categoryQuery = `SELECT DISTINCT category FROM news`;
+        connection.query(categoryQuery, (catError, categories) => {
+            if (catError) {
+                console.error('Error fetching categories from MySQL:', catError);
+                res.status(500).send('An error occurred while fetching categories');
+                return;
+            }
+            res.render('search', { searchTerm: category, results, categories });
+        });
     });
 });
 
