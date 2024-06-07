@@ -530,15 +530,17 @@ app.set('view engine', 'ejs');
 app.use(express.static('public')); 
 
 const connection = mysql.createConnection({
-  /*host: 'final3355db.mysql.database.azure.com',
+  host: 'final3355db.mysql.database.azure.com',
   user: 'izzet',
   password: '12345Izo',
   database: 'izzetcemibik_19070001035_finalassignment'
-*/
+
+/*
   host: 'localhost',
   user: 'root',
   password: '12345Izo',
   database: 'izzetcemibik_19070001035_finalassignment'
+  */
 });
 
 // Event: Connection Established
