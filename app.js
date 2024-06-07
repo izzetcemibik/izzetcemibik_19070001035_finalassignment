@@ -561,7 +561,7 @@ app.get('/', (req, res) => {
         }
         const slider = results;
         const randomNews = shuffleArray(results).slice(0, 2);
-        res.render('home', { slider, randomNews});
+        res.render('home', { slider, randomNews, user: req.session.user });
     });
 });
 
