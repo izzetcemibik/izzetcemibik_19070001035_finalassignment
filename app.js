@@ -299,8 +299,7 @@ const connection = mysql.createConnection({
     host: 'se3355midtermdb.mysql.database.azure.com',
     user: 'midtermizzetcemibik',
     password: '12345Izo',
-    database: '19070001035_izzetcemibik_midtermdatabase',
-    ssl: false
+    database: '19070001035_izzetcemibik_midtermdatabase'
     /*localhost
     host: 'localhost',
     user: 'root',
