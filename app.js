@@ -546,7 +546,7 @@ connection.connect((err) => {
 
 
 app.get('/', (req, res) => {
-    connection.query('SELECT idnews, image, topic, category FROM news', (error, results) => {
+    connection.query('SELECT idnews, topic, image, category FROM news', (error, results) => {
         if (error) {
             console.error('Error fetching data from MySQL:', error);
             return;
