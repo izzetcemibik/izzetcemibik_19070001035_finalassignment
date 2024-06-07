@@ -522,47 +522,50 @@ const mysql = require('mysql');
 const express = require('express');
 const mysql = require('mysql');
 const bcrypt = require('bcryptjs');
+const bodyParser = require('body-parser');
+const session = require('express-session');
 const app = express();
 const PORT = 8080;
 
 // Set EJS as the templating engine
 app.set('view engine', 'ejs');
-app.use(express.static('public')); 
+app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+app.use(session({
+    secret: 'your_secret_key',
+    resave: false,
+    saveUninitialized: true
+}));
 
 const connection = mysql.createConnection({
-  host: 'final3355db.mysql.database.azure.com',
-  user: 'izzet',
-  password: '12345Izo',
-  database: 'izzetcemibik_19070001035_finalassignment'
-
-/*
-  host: 'localhost',
-  user: 'root',
-  password: '12345Izo',
-  database: 'izzetcemibik_19070001035_finalassignment'
-  */
+    host: 'final3355db.mysql.database.azure.com',
+    user: 'izzet',
+    password: '12345Izo',
+    database: 'izzetcemibik_19070001035_finalassignment'
 });
 
 // Event: Connection Established
 connection.connect((err) => {
-  if (err) {
-      console.error('Error connecting to MySQL database:', err);
-      return;
-  }
-  console.log('Connected to MySQL database');
+    if (err) {
+        console.error('Error connecting to MySQL database:', err);
+        return;
+    }
+    console.log('Connected to MySQL database');
 });
-
 
 app.get('/', (req, res) => {
     const query = 'SELECT idnews, topic, image, category FROM news';
     connection.query(query, (error, results) => {
         if (error) {
             console.error('Error fetching data from MySQL:', error);
+            res.status(500).send('Error fetching data from MySQL');
             return;
         }
         const slider = results;
         const randomNews = shuffleArray(results).slice(0, 2);
-        res.render('/home', { slider, randomNews, user: req.session.user });
+        res.render('home', { slider, randomNews, user: req.session.user });
     });
 });
 
@@ -718,18 +721,9 @@ app.post('/dislike', isAuthenticated, (req, res) => {
     });
 });
 
-
-
-
-
-
-
-
-
-app.listen(PORT, (error) =>{ 
-	if(!error) 
-		console.log("Server is Successfully Running, and App is listening on port "+ PORT) 
-	else
-		console.log("Error occurred, server can't start", error); 
-	} 
-);
+app.listen(PORT, (error) => { 
+    if (!error) 
+        console.log("Server is Successfully Running, and App is listening on port " + PORT) 
+    else
+        console.log("Error occurred, server can't start", error); 
+});
