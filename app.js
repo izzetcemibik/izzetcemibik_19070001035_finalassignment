@@ -521,7 +521,6 @@ const mysql = require('mysql');
 */
 const express = require('express');
 const mysql = require('mysql');
-const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const app = express();
 const PORT = 8080;
@@ -531,8 +530,13 @@ app.set('view engine', 'ejs');
 app.use(express.static('public')); 
 
 const connection = mysql.createConnection({
-  host: 'final3355db.mysql.database.azure.com',
+  /*host: 'final3355db.mysql.database.azure.com',
   user: 'izzet',
+  password: '12345Izo',
+  database: 'izzetcemibik_19070001035_finalassignment'
+*/
+  host: 'localhost',
+  user: 'root',
   password: '12345Izo',
   database: 'izzetcemibik_19070001035_finalassignment'
 });
@@ -567,8 +571,14 @@ const shuffleArray = (array) => {
     return array;
 };
 
-
-
+// Middleware for authentication check
+function isAuthenticated(req, res, next) {
+    if (req.session.user) {
+        next();
+    } else {
+        res.redirect('/signIn');
+    }
+}
 
 
 
