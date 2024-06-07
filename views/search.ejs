@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MSN</title>
+    <title>Search Results</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -12,7 +12,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="#" style="display: flex; align-items: center;">
+        <a class="navbar-brand" href="/" style="display: flex; align-items: center;">
             <img src="/msn_logo_icon_181375.png" alt="Logo" style="height: 30px;">
             <h1 style="margin: 0; margin-left: 5px; font-size: 25px">MSN</h1>
         </a>
@@ -73,111 +73,25 @@
             </ul>
         </div>
     </nav>
-    <div class="general-div">
-        <div class="narrow-div">
-            <div class="bar">
-                <div class="menu-item" id="weather">Yükleniyor...</div>
-                <div class="menu-item" data-translate="Spor">Spor</div>
-                <div class="menu-item" data-translate="Finans">Finans</div>
-                <div class="menu-item" data-translate="Haber">Haber</div>
-                <div class="menu-item" data-translate="Eğlence">Eğlence</div>
-                <div class="menu-item" data-translate="Astroloji">Astroloji</div>
-                <div class="menu-item" data-translate="Otomobil">Otomobil</div>
-                <div class="menu-item" data-translate="Yaşam">Yaşam</div>
-                <div class="menu-item" data-translate="Hava Durumu">Hava Durumu</div>
-                <div class="menu-item" data-translate="Video">Video</div>
-            </div>
-        </div>
-    </div>
-    <div class="another-div">
-        <div class="narrow-div">
-            <div class="row">
-                <div class="col-md-6">
-                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                        <ol class="carousel-indicators">
-                            <% slider.forEach((slide, index) => { %>
-                                <li data-target="#carouselExampleIndicators" data-slide-to="<%= index %>" class="<%= index === 0 ? 'active' : '' %>"></li>
-                            <% }) %>
-                        </ol>
-                        <div class="carousel-inner">
-                            <% slider.forEach((slide, index) => { %>
-                                <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
-                                    <a href="/newsDetail?id=<%= slide.idnews %>">
-                                        <img src="<%= slide.image %>" class="d-block w-100" alt="<%= slide.topic %>">
-                                        <div class="carousel-caption d-none d-md-block text-left">
-                                            <h5 style="background-color: rgba(120, 119, 119, 0.486);"><%= slide.topic %></h5>
-                                        </div>
-                                    </a>
-                                </div>
-                            <% }) %>
+    <div class="container mt-4">
+        <h2>Search Results for "<%= searchTerm %>"</h2>
+        <div class="row">
+            <% results.forEach(result => { %>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="<%= result.image %>" class="card-img-top" alt="<%= result.topic %>">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= result.topic %></h5>
+                            <p class="card-text"><%= result.category %></p>
+                            <a href="/newsDetail?id=<%= result.idnews %>" class="btn btn-primary">Read More</a>
                         </div>
-                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="row">
-                        <% for(let i = 0; i < randomNews.length; i++) { %>
-                            <div class="col-md-6" style="height: 200px;"> <!-- Kartların sabit yüksekliği -->
-                                <a href="/newsDetail?id=<%= randomNews[i]['idnews'] %>">
-                                    <div class="card" style="height: 100%; margin-bottom: 10px;">
-                                        <div class="card-body d-flex flex-column justify-content-between"> <!-- İçeriği kartın içine yerleştirmek için -->
-                                            <div style="width: 100%; height: 200px; overflow: hidden; position: relative;">
-                                                <img src="<%= randomNews[i]['image'] %>" class="d-block" alt="" style="width: 100%;">
-                                                <h5 class="card-title" style="position: absolute; bottom: 0; left: 0; right: 0; padding: 10px; margin: 0; color: white; font-size: 15px; background-color: rgba(120, 119, 119, 0.486);"> <!-- Başlık etiketi -->
-                                                    <%= randomNews[i]['topic'] %>
-                                                </h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        <% } %>
-                    </div>
-                </div> 
-            </div>
+            <% }) %>
         </div>
     </div>
     <script>
-        // Konum bilgisini al
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var latitude = position.coords.latitude;
-            var longitude = position.coords.longitude;
-
-            // Hava durumu bilgisini almak için bir API kullanabilirsiniz
-            // Örnek API: OpenWeatherMap
-            var apiKey = '86cac02f2ce7570ee7a07453d958fe81';
-            var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?lat=' + latitude + '&lon=' + longitude + '&appid=' + apiKey;
-
-            // Hava durumu bilgisini almak için istek yap
-            fetch(apiUrl)
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(data) {
-                    // Hava durumu bilgilerini kullanarak sayfada göster
-                    var temperatureKelvin = data.main.temp;
-                    var temperatureCelsius = (temperatureKelvin - 273.15).toFixed(1);
-                    var cityName = data.name;
-
-                    // İlgili HTML öğesine hava durumu bilgilerini yaz
-                    var weatherElement = document.getElementById('weather');
-                    weatherElement.innerHTML = cityName + ' / ' + temperatureCelsius + '°C';
-                })
-                .catch(function(error) {
-                    console.error('Hata:', error);
-                });
-        });
-
-        // Login butonuna tıklanınca signInUp sayfasını aç
         document.getElementById('loginButton').addEventListener('click', function() {
-            // signInUp sayfasını açmak için window.location.href kullanılır
             window.location.href = '/signIn';
         });
 
@@ -215,7 +129,7 @@
                     'Ara': 'Search'
                 }
             };
-            
+
             document.querySelectorAll('[data-translate]').forEach(el => {
                 const key = el.getAttribute('data-translate');
                 el.textContent = translations[language][key];

@@ -1,13 +1,12 @@
 const express = require('express');
 const mysql = require('mysql');
-const fs = require('fs');  // Import the fs module
+const fs = require('fs');  
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-// Set EJS as the templating engine
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,11 +25,10 @@ const connection = mysql.createConnection({
     database: 'izzetcemibik_19070001035_finalassignment',
     ssl: {
         ca: fs.readFileSync(__dirname + '/certs/DigiCertGlobalRootG2.crt.pem'),
-        rejectUnauthorized: false  // Allow self-signed certificates
+        rejectUnauthorized: false  
     }
 });
 
-// Event: Connection Established
 connection.connect((err) => {
     if (err) {
         console.error('Error connecting to MySQL database:', err);
@@ -61,7 +59,6 @@ const shuffleArray = (array) => {
     return array;
 };
 
-// Middleware for authentication check
 function isAuthenticated(req, res, next) {
     if (req.session.user) {
         next();
@@ -70,7 +67,6 @@ function isAuthenticated(req, res, next) {
     }
 }
 
-// Sign In and Sign Up routes
 app.get('/signIn', (req, res) => {
     res.render('signIn');
 });
@@ -181,7 +177,6 @@ app.get('/newsDetail', (req, res) => {
     });
 });
 
-// Routes that require authentication
 app.post('/like', isAuthenticated, (req, res) => {
     const userId = req.session.user.id;
     const { newsId } = req.body;
@@ -207,6 +202,31 @@ app.post('/dislike', isAuthenticated, (req, res) => {
             return;
         }
         res.status(200).json({ message: 'News disliked' });
+    });
+});
+
+app.post('/search', (req, res) => {
+    const searchTerm = req.body.searchTerm;
+    const query = `SELECT idnews, topic, image, category FROM news WHERE topic LIKE ?`;
+    connection.query(query, [`%${searchTerm}%`], (error, results) => {
+        if (error) {
+            console.error('Error fetching search results from MySQL:', error);
+            res.status(500).send('An error occurred while fetching search results');
+            return;
+        }
+        res.render('search', { searchTerm, results });
+    });
+});
+
+app.get('/categories', (req, res) => {
+    const query = `SELECT DISTINCT category FROM news`;
+    connection.query(query, (error, results) => {
+        if (error) {
+            console.error('Error fetching categories from MySQL:', error);
+            res.status(500).send('An error occurred while fetching categories');
+            return;
+        }
+        res.json(results);
     });
 });
 
