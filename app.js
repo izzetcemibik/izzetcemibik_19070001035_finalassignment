@@ -294,16 +294,19 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
-const sslCertPath = path.join(__dirname, 'certs', 'DigiCertGlobalRootG2.crt.pem');
 
 const connection = mysql.createConnection({
     host: 'se3355midtermdb.mysql.database.azure.com',
     user: 'midtermizzetcemibik',
     password: '12345Izo',
-    database: '19070001035_izzetcemibik_midtermdatabase',
-    ssl: {
-        ca: fs.readFileSync(sslCertPath)
-    }
+    database: '19070001035_izzetcemibik_midtermdatabase'
+
+    /*localhost
+    host: 'localhost',
+    user: 'root',
+    password: '12345Izo',
+    database: 'izzetcemibik_19070001035_finalassignment'
+    */
 });
 
 connection.connect((err) => {
