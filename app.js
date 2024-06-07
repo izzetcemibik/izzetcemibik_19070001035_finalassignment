@@ -286,7 +286,7 @@ const mysql = require('mysql');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = 8080;
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
