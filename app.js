@@ -513,16 +513,18 @@ app.listen(PORT, () => {
 
 */
 
-
+/*
 const express = require('express'); 
-
-
 const app = express(); 
 const PORT = 8080;
-
-
 const mysql = require('mysql');
-
+*/
+const express = require('express');
+const mysql = require('mysql');
+const session = require('express-session');
+const bcrypt = require('bcryptjs');
+const app = express();
+const PORT = 8080;
 
 // Set EJS as the templating engine
 app.set('view engine', 'ejs');
