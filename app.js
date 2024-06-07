@@ -525,7 +525,7 @@ const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const app = express();
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 // Set EJS as the templating engine
 app.set('view engine', 'ejs');
@@ -596,18 +596,23 @@ app.get('/signUp', (req, res) => {
 });
 
 app.post('/signUp', async (req, res) => {
-    const { first_name, last_name, email, password, country, city } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
+    try {
+        const { first_name, last_name, email, password, country, city } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-    connection.query('INSERT INTO users (first_name, last_name, email, password, country, city) VALUES (?, ?, ?, ?, ?, ?)', 
-    [first_name, last_name, email, hashedPassword, country, city], (err) => {
-        if (err) {
-            console.error('Error inserting user into MySQL:', err);
-            res.status(500).send('An error occurred while registering');
-            return;
-        }
-        res.redirect('/signIn');
-    });
+        connection.query('INSERT INTO users (first_name, last_name, email, password, country, city) VALUES (?, ?, ?, ?, ?, ?)', 
+        [first_name, last_name, email, hashedPassword, country, city], (err) => {
+            if (err) {
+                console.error('Error inserting user into MySQL:', err);
+                res.status(500).send('An error occurred while registering');
+                return;
+            }
+            res.redirect('/signIn');
+        });
+    } catch (err) {
+        console.error('Error during sign-up process:', err);
+        res.status(500).send('An internal server error occurred');
+    }
 });
 
 app.post('/signIn', (req, res) => {
@@ -620,7 +625,7 @@ app.post('/signIn', (req, res) => {
             return;
         }
         if (results.length === 0 || !(await bcrypt.compare(password, results[0].password))) {
-            res.send('Incorrect email or password');
+            res.status(400).send('Incorrect email or password');
             return;
         }
         req.session.user = {
