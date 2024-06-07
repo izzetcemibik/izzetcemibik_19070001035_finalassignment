@@ -547,7 +547,7 @@ connection.connect((err) => {
 
 app.get('/', (req, res) => {
    
-        res.render('aptal ders');
+    res.send('Hello, World!');
     
 });
 
