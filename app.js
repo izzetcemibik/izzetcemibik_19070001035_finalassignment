@@ -296,7 +296,7 @@ const dbConfig = {
     host: 'se3355midtermdb.mysql.database.azure.com',
     user: 'midtermizzetcemibik',
     password: '12345Izo',
-    database: '19070001035_izzetcemibik_midtermdatabase',
+    database: 'izzetcemibik_19070001035_finalassignment',
     ssl: {
         rejectUnauthorized: true,
         ca: fs.readFileSync('/path/to/your/ca-certificate.crt').toString()
