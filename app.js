@@ -281,49 +281,55 @@ app.post('/dislike', isAuthenticated, (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-*/
-const express = require('express');
+*/const express = require('express');
 const mysql = require('mysql');
 const session = require('express-session');
-const bcrypt = require('bcryptjs'); 
-const fs = require('fs');
+const bcrypt = require('bcryptjs');
 const app = express();
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
-
-const connection = mysql.createConnection({
+const dbConfig = {
     host: 'se3355midtermdb.mysql.database.azure.com',
     user: 'midtermizzetcemibik',
     password: '12345Izo',
     database: '19070001035_izzetcemibik_midtermdatabase'
-    /*localhost
-    host: 'localhost',
-    user: 'root',
-    password: '12345Izo',
-    database: 'izzetcemibik_19070001035_finalassignment'
-    */
-});
+};
 
-connection.connect((err) => {
-    if (err) {
-        console.error('Error connecting to MySQL database:', err);
-        process.exit(1); // Exit if the database connection fails
-    }
-    console.log('Connected to MySQL database');
-});
+let connection;
 
-app.set('view engine', 'ejs');
-app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true }));
+function handleDisconnect() {
+    connection = mysql.createConnection(dbConfig);
+
+    connection.connect((err) => {
+        if (err) {
+            console.error('Error connecting to MySQL database:', err);
+            setTimeout(handleDisconnect, 2000); // 2 seconds delay before reconnecting
+        } else {
+            console.log('Connected to MySQL database');
+        }
+    });
+
+    connection.on('error', (err) => {
+        console.error('MySQL error:', err);
+        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+            handleDisconnect();
+        } else {
+            throw err;
+        }
+    });
+}
+
+handleDisconnect();
 
 app.use(session({
     secret: 'secretKey',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: { secure: true } // secure should be true in production with HTTPS
 }));
 
 // Middleware for authentication check
@@ -498,4 +504,3 @@ app.get('/health', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-
