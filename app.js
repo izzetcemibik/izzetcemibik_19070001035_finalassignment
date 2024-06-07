@@ -552,10 +552,18 @@ app.get('/', (req, res) => {
             return;
         }
         const slider = results;
-        //const randomNews = shuffleArray(results).slice(0, 2);
-        res.render('home', { slider, /*randomNews, user: req.session.user*/ });
+        const randomNews = shuffleArray(results).slice(0, 2);
+        res.render('home', { slider, randomNews, user: req.session.user});
     });
 });
+
+const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+};
 
 
 app.listen(PORT, (error) =>{ 
