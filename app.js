@@ -582,8 +582,6 @@ function isAuthenticated(req, res, next) {
     }
 }
 
-
-
 // Sign In and Sign Up routes
 app.get('/signIn', (req, res) => {
     res.render('signIn');
