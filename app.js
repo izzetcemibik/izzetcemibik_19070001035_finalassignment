@@ -556,7 +556,7 @@ connection.connect((err) => {
 });
 
 app.get('/', (req, res) => {
-    const query = 'SELECT idnews, topic, image, category FROM news';
+    /*const query = 'SELECT idnews, topic, image, category FROM news';
     connection.query(query, (error, results) => {
         if (error) {
             console.error('Error fetching data from MySQL:', error);
@@ -566,7 +566,8 @@ app.get('/', (req, res) => {
         const slider = results;
         const randomNews = shuffleArray(results).slice(0, 2);
         res.render('home', { slider, randomNews, user: req.session.user });
-    });
+    });*/
+    res.render('home');
 });
 
 const shuffleArray = (array) => {
