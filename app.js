@@ -546,9 +546,16 @@ connection.connect((err) => {
 
 
 app.get('/', (req, res) => {
-   
-    res.send('Hello, World!');
-    
+    connection.query('SELECT idnews, image, topic, category FROM news', (error, results) => {
+        if (error) {
+            console.error('Error fetching data from MySQL:', error);
+            res.status(500).send('An error occurred while fetching data');
+            return;
+        }
+        const slider = results;
+        const randomNews = shuffleArray(results).slice(0, 2);
+        res.render('home', { slider, randomNews, user: req.session.user });
+    });
 });
 
 
