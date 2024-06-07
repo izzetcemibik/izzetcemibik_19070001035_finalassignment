@@ -300,6 +300,7 @@ const connection = mysql.createConnection({
     user: 'midtermizzetcemibik',
     password: '12345Izo',
     database: '19070001035_izzetcemibik_midtermdatabase',
+    ssl: false
     /*localhost
     host: 'localhost',
     user: 'root',
