@@ -18,7 +18,8 @@ app.use(session({
     saveUninitialized: true
 }));
 
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
+    connectionLimit: 10,
     host: 'final3355db.mysql.database.azure.com',
     user: 'izzet',
     password: '12345Izo',
@@ -29,17 +30,9 @@ const connection = mysql.createConnection({
     }
 });
 
-connection.connect((err) => {
-    if (err) {
-        console.error('Error connecting to MySQL database:', err);
-        return;
-    }
-    console.log('Connected to MySQL database');
-});
-
 app.get('/', (req, res) => {
     const query = 'SELECT idnews, topic, image, category FROM news';
-    connection.query(query, (error, results) => {
+    pool.query(query, (error, results) => {
         if (error) {
             console.error('Error fetching data from MySQL:', error);
             res.status(500).send('Error fetching data from MySQL');
@@ -80,7 +73,7 @@ app.post('/signUp', async (req, res) => {
         const { first_name, last_name, email, password, country, city } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        connection.query('INSERT INTO users (first_name, last_name, email, password, country, city) VALUES (?, ?, ?, ?, ?, ?)', 
+        pool.query('INSERT INTO users (first_name, last_name, email, password, country, city) VALUES (?, ?, ?, ?, ?, ?)', 
         [first_name, last_name, email, hashedPassword, country, city], (err) => {
             if (err) {
                 console.error('Error inserting user into MySQL:', err);
@@ -98,7 +91,7 @@ app.post('/signUp', async (req, res) => {
 app.post('/signIn', (req, res) => {
     const { email, password } = req.body;
 
-    connection.query('SELECT * FROM users WHERE email = ?', [email], async (err, results) => {
+    pool.query('SELECT * FROM users WHERE email = ?', [email], async (err, results) => {
         if (err) {
             console.error('Error fetching user from MySQL:', err);
             res.status(500).send('An error occurred while signing in');
@@ -133,7 +126,7 @@ app.get('/newsDetail', (req, res) => {
     const newsId = req.query.id;
     const userId = req.session.user ? req.session.user.id : null;
 
-    connection.query('SELECT * FROM news WHERE idnews = ?', [newsId], (error, results) => {
+    pool.query('SELECT * FROM news WHERE idnews = ?', [newsId], (error, results) => {
         if (error) {
             console.error('Error fetching news details from MySQL:', error);
             res.status(500).send('An error occurred while fetching news details');
@@ -142,7 +135,7 @@ app.get('/newsDetail', (req, res) => {
 
         const news = results.length > 0 ? results[0] : null;
 
-        connection.query('SELECT * FROM news WHERE idnews != ? ORDER BY RAND() LIMIT 2', [newsId], (error, otherResults) => {
+        pool.query('SELECT * FROM news WHERE idnews != ? ORDER BY RAND() LIMIT 2', [newsId], (error, otherResults) => {
             if (error) {
                 console.error('Error fetching other news from MySQL:', error);
                 res.status(500).send('An error occurred while fetching other news');
@@ -150,14 +143,14 @@ app.get('/newsDetail', (req, res) => {
             }
 
             if (userId) {
-                connection.query('SELECT * FROM likes WHERE user_id = ? AND news_id = ?', [userId, newsId], (likeError, likeResults) => {
+                pool.query('SELECT * FROM likes WHERE user_id = ? AND news_id = ?', [userId, newsId], (likeError, likeResults) => {
                     if (likeError) {
                         console.error('Error fetching likes from MySQL:', likeError);
                         res.status(500).send('An error occurred while fetching likes');
                         return;
                     }
 
-                    connection.query('SELECT * FROM dislikes WHERE user_id = ? AND news_id = ?', [userId, newsId], (dislikeError, dislikeResults) => {
+                    pool.query('SELECT * FROM dislikes WHERE user_id = ? AND news_id = ?', [userId, newsId], (dislikeError, dislikeResults) => {
                         if (dislikeError) {
                             console.error('Error fetching dislikes from MySQL:', dislikeError);
                             res.status(500).send('An error occurred while fetching dislikes');
@@ -181,7 +174,7 @@ app.post('/like', isAuthenticated, (req, res) => {
     const userId = req.session.user.id;
     const { newsId } = req.body;
 
-    connection.query('INSERT INTO likes (user_id, news_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE id = id', [userId, newsId], (err) => {
+    pool.query('INSERT INTO likes (user_id, news_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE id = id', [userId, newsId], (err) => {
         if (err) {
             console.error('Error liking the news:', err);
             res.status(500).json({ error: 'An error occurred while liking the news' });
@@ -195,7 +188,7 @@ app.post('/dislike', isAuthenticated, (req, res) => {
     const userId = req.session.user.id;
     const { newsId } = req.body;
 
-    connection.query('INSERT INTO dislikes (user_id, news_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE id = id', [userId, newsId], (err) => {
+    pool.query('INSERT INTO dislikes (user_id, news_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE id = id', [userId, newsId], (err) => {
         if (err) {
             console.error('Error disliking the news:', err);
             res.status(500).json({ error: 'An error occurred while disliking the news' });
@@ -208,7 +201,7 @@ app.post('/dislike', isAuthenticated, (req, res) => {
 app.post('/search', (req, res) => {
     const searchTerm = req.body.searchTerm;
     const query = `SELECT idnews, topic, image, category FROM news WHERE topic LIKE ?`;
-    connection.query(query, [`%${searchTerm}%`], (error, results) => {
+    pool.query(query, [`%${searchTerm}%`], (error, results) => {
         if (error) {
             console.error('Error fetching search results from MySQL:', error);
             res.status(500).send('An error occurred while fetching search results');
@@ -216,7 +209,7 @@ app.post('/search', (req, res) => {
         }
 
         const categoryQuery = `SELECT DISTINCT category FROM news`;
-        connection.query(categoryQuery, (catError, categories) => {
+        pool.query(categoryQuery, (catError, categories) => {
             if (catError) {
                 console.error('Error fetching categories from MySQL:', catError);
                 res.status(500).send('An error occurred while fetching categories');
@@ -230,7 +223,7 @@ app.post('/search', (req, res) => {
 app.get('/category/:category', (req, res) => {
     const category = req.params.category;
     const query = `SELECT idnews, topic, image, category FROM news WHERE category = ?`;
-    connection.query(query, [category], (error, results) => {
+    pool.query(query, [category], (error, results) => {
         if (error) {
             console.error('Error fetching news by category from MySQL:', error);
             res.status(500).send('An error occurred while fetching news by category');
@@ -238,7 +231,7 @@ app.get('/category/:category', (req, res) => {
         }
 
         const categoryQuery = `SELECT DISTINCT category FROM news`;
-        connection.query(categoryQuery, (catError, categories) => {
+        pool.query(categoryQuery, (catError, categories) => {
             if (catError) {
                 console.error('Error fetching categories from MySQL:', catError);
                 res.status(500).send('An error occurred while fetching categories');
@@ -251,11 +244,10 @@ app.get('/category/:category', (req, res) => {
 
 app.listen(PORT, (error) => { 
     if (!error) 
-        console.log("Server is Successfully Running, and App is listening on port " + PORT) 
+        console.log("Server is Successfully Running, and App is listening on port " + PORT); 
     else
         console.log("Error occurred, server can't start", error); 
 });
-
 
 
 /*
