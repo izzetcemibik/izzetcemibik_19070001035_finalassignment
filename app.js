@@ -256,6 +256,53 @@ app.listen(PORT, (error) => {
         console.log("Error occurred, server can't start", error); 
 });
 
+app.listen(PORT, (error) => { 
+    if (!error) 
+        console.log("Server is Successfully Running, and App is listening on port " + PORT) 
+    else
+        console.log("Error occurred, server can't start", error); 
+});
+
+// Reconnection logic
+connection.on('error', function(err) {
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+        handleDisconnect();
+    } else {
+        throw err;
+    }
+});
+
+function handleDisconnect() {
+    let = mysql.createConnection({
+        host: 'final3355db.mysql.database.azure.com',
+        user: 'izzet',
+        password: '12345Izo',
+        database: 'izzetcemibik_19070001035_finalassignment',
+        ssl: {
+            ca: fs.readFileSync(__dirname + '/certs/DigiCertGlobalRootG2.crt.pem'),
+            rejectUnauthorized: false
+        }
+    });
+
+    let.connect(function(err) {
+        if (err) {
+            console.error('Error reconnecting to MySQL:', err);
+            setTimeout(handleDisconnect, 2000); // Retry after 2 seconds
+        }
+    });
+
+    let.on('error', function(err) {
+        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+            handleDisconnect();
+        } else {
+            throw err;
+        }
+    });
+}
+
+handleDisconnect();
+
+
 /*
     host: 'localhost',
     user: 'root',
