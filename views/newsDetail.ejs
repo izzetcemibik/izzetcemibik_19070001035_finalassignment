@@ -33,42 +33,49 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="/" style="display: flex; align-items: center;">
+        <a class="navbar-brand" href="#" style="display: flex; align-items: center;">
             <img src="/msn_logo_icon_181375.png" alt="Logo" style="height: 30px;">
             <h1 style="margin: 0; margin-left: 5px; font-size: 25px">MSN</h1>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <form class="form-inline">
-                        <div class="d-flex">
-                            <input class="form-control mr-sm-0" style="border-top-right-radius: 0; border-bottom-right-radius: 0" type="search" placeholder="Ara" aria-label="Ara">
-                            <button class="btn my-2 my-sm-0" style="border-top-left-radius: 0; border-bottom-left-radius: 0; background-color:rgb(0, 166, 255)" type="submit">Ara</button>
-                        </div>
-                    </form>
-                </li>
-            </ul>
+            <ul class="navbar-nav mr-auto"></ul>
+            <div class="navbar-center">
+                <form class="form-inline" action="/search" method="POST">
+                    <div class="d-flex">
+                        <input name="searchTerm" class="form-control mr-sm-0" style="border-top-right-radius: 0; border-bottom-right-radius: 0" type="search" placeholder="Ara" aria-label="Ara">
+                        <button class="btn my-2 my-sm-0" style="border-top-left-radius: 0; border-bottom-left-radius: 0; background-color:rgb(0, 166, 255)" type="submit" data-translate="Ara">Ara</button>
+                    </div>
+                </form>
+            </div>
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <button id="loginButton" type="button" class="btn btn-primary"><img src="/loginLogo.svg"></button>
-                </li>
+                <% if (user) { %>
+                    <li class="nav-item">
+                        <form action="/signOut" method="POST">
+                            <button type="submit" class="btn btn-primary" data-translate="SignOut">SignOut</button>
+                        </form>
+                    </li>
+                <% } else { %>
+                    <li class="nav-item">
+                        <button id="loginButton" type="button" class="btn btn-primary" data-translate="LogIn" style="width: 125px;">LogIn</button>
+                    </li>
+                <% } %>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-bell"></i>
-                      <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg"><path d="M14 3a8.5 8.5 0 018.5 8.25v4.86l1.41 3.65c.04.1.07.2.08.3l.01.16c0 .66-.5 1.2-1.15 1.27l-.13.01H17.5a3.5 3.5 0 01-7 .2v-.2H5.27a1.28 1.28 0 01-1.23-1.62l.04-.12L5.5 16.1v-4.6C5.5 6.8 9.3 3 14 3zm2 18.65v-.15h-4a2 2 0 004 .15zM14 4.5a7 7 0 00-7 6.76v4.99c0 .07 0 .13-.02.19l-.03.09L5.6 20h16.8l-1.35-3.48a.75.75 0 01-.04-.17V11.5a7 7 0 00-7.01-7z"></path></svg>
-                      <span class="badge rounded-pill badge-notification bg-danger">1</span>
+                        <i class="fas fa-bell"></i>
+                        <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg"><path d="M14 3a8.5 8.5 0 018.5 8.25v4.86l1.41 3.65c.04.1.07.2.08.3l.01.16c0 .66-.5 1.2-1.15 1.27l-.13.01H17.5a3.5 3.5 0 01-7 .2v-.2H5.27a1.28 1.28 0 01-1.23-1.62l.04-.12L5.5 16.1v-4.6C5.5 6.8 9.3 3 14 3zm2 18.65v-.15h-4a2 2 0 004 .15zM14 4.5a7 7 0 00-7 6.76v4.99c0 .07 0 .13-.02.19l-.03.09L5.6 20h16.8l-1.35-3.48a.75.75 0 01-.04-.17V11.5a7 7 0 00-7.01-7z"></path></svg>
+                        <span class="badge rounded-pill badge-notification bg-danger">1</span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                      <a class="dropdown-item" href="#">Some news</a>
-                      <a class="dropdown-item" href="#">Another news</a>
-                      <a class="dropdown-item" href="#">Something else here</a>
+                        <a class="dropdown-item" href="#">ABD Enfilasyonu Belli Oldu</a>
+                        <a class="dropdown-item" href="#">Ultraviole Işınlar Nerdeyse Kolojenimiz Bitiriyor</a>
+                        <a class="dropdown-item" href="#">Yaris Hybrid ve Yaris Cross Satışa Sunuldu</a>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#settingsModal">Ayarlar</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#settingsModal" data-translate="Ayarlar">Ayarlar</button>
                     <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -79,10 +86,13 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <!-- Ayarlar içeriği buraya gelecek -->
+                                    <select id="languageSelect" class="form-control">
+                                        <option value="tr">Türkçe</option>
+                                        <option value="en">English</option>
+                                    </select>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-translate="Kapat">Kapat</button>
                                 </div>
                             </div>
                         </div>
