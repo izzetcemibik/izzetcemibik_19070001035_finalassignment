@@ -33,12 +33,12 @@
                 <% if (user) { %>
                     <li class="nav-item">
                         <form action="/signOut" method="POST">
-                            <button type="submit" class="btn btn-primary">SignOut</button>
+                            <button type="submit" class="btn btn-primary" data-translate="SignOut">SignOut</button>
                         </form>
                     </li>
                 <% } else { %>
                     <li class="nav-item">
-                        <button id="loginButton" type="button" class="btn btn-primary">LogIn</button>
+                        <button id="loginButton" type="button" class="btn btn-primary" data-translate="LogIn">LogIn</button>
                     </li>
                 <% } %>
                 <li class="nav-item dropdown">
@@ -48,9 +48,9 @@
                         <span class="badge rounded-pill badge-notification bg-danger">1</span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#">Some news</a>
-                        <a class="dropdown-item" href="#">Another news</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                        <a class="dropdown-item" href="#">ABD Enfilasyonu Belli Oldu</a>
+                        <a class="dropdown-item" href="#">Ultraviole Işınlar Nerdeyse Kolojenimiz Bitiriyor</a>
+                        <a class="dropdown-item" href="#">Yaris Hybrid ve Yaris Cross Satışa Sunuldu</a>
                     </div>
                 </li>
                 <li class="nav-item">
@@ -213,7 +213,9 @@
                     'Ara': 'Ara',
                     'Ayarlar': 'Ayarlar',
                     'Kapat': 'Kapat',
-                    'Yükleniyor...': 'Yükleniyor...'
+                    'Yükleniyor...': 'Yükleniyor...',
+                    'SignOut': 'Çıkış Yap',
+                    'LogIn': 'Giriş Yap'
                 },
                 'en': {
                     'Spor': 'Sports',
@@ -228,7 +230,9 @@
                     'Ara': 'Search',
                     'Ayarlar': 'Settings',
                     'Kapat': 'Close',
-                    'Yükleniyor...': 'Loading...'
+                    'Yükleniyor...': 'Loading...',
+                    'SignOut': 'SignOut',
+                    'LogIn': 'LogIn'
                 }
             };
             
