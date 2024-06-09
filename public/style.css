@@ -34,3 +34,14 @@ body{
     display: flex;
     transition: transform 0.5s ease;
 }
+
+.navbar-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.form-inline {
+    display: flex;
+    align-items: center;
+}
