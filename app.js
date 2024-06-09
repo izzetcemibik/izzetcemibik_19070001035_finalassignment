@@ -122,6 +122,18 @@ app.post('/signOut', (req, res) => {
     });
 });
 
+app.post('/signOut', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Error destroying session:', err);
+            res.status(500).send('An error occurred while signing out');
+            return;
+        }
+        res.redirect('/');
+    });
+});
+
+
 app.get('/newsDetail', (req, res) => {
     const newsId = req.query.id;
     const userId = req.session.user ? req.session.user.id : null;
