@@ -16,13 +16,6 @@
         .navbar {
             background-color: rgb(41, 41, 41);
         }
-        .fixed-buttons button {
-            width: 50px;
-            height: 50px;
-            border-radius: 20px;
-            border: none;
-            background-color: rgb(63, 63, 63);
-        }
         .liked {
             color: blue;
         }
@@ -103,54 +96,41 @@
             </ul>
         </div>
     </nav>
-    <div style="display: flex; flex-direction: row; margin-top: 20px">
-        <div class="fixed-buttons" style="margin-top: 20px; width: 20vh; display: flex; justify-content: center; top: 20px;">
-            <div style="display: flex; flex-direction: column; align-items: center; position: fixed; margin-top: 15%">
-                <% if (user) { %>
-                    <form id="likeForm" method="POST">
-                        <input type="hidden" name="newsId" value="<%= news.idnews %>">
-                        <button type="submit" style="margin-bottom: 5px;" class="like-button <%= hasLiked ? 'liked' : '' %>">Like</button>
-                    </form>
-                    <form id="dislikeForm" method="POST">
-                        <input type="hidden" name="newsId" value="<%= news.idnews %>">
-                        <button type="submit" style="margin-bottom: 5px;" class="dislike-button <%= hasDisliked ? 'disliked' : '' %>">Dislike</button>
-                    </form>
-                <% } %>
-                <button>Paylaş</button>
-            </div>
-        </div>
-
-        <div style="flex: 1; padding-right: 20px; padding-left: 20px">
-            <!-- Sol taraftaki dar div -->
-            <div>
-                <!-- Haberin başlığı ve resmi -->
-                <h2 style="color: white;"><%= news.topic %></h2>
-                <img src="<%= news.image %>" alt="<%= news.topic %>">
-            </div>
+    <div style="display: flex; flex-direction: column; margin-top: 20px; align-items: center;">
+        <div style="width: 100%; padding-right: 20px; padding-left: 20px;">
+            <!-- Haberin başlığı ve resmi -->
+            <h2 style="color: white;"><%= news.topic %></h2>
+            <img src="<%= news.image %>" alt="<%= news.topic %>" style="width: 100%; height: auto;">
             <!-- Haber metni -->
-            <div>
-                <p style="font-size: 25px; color: white;"><%= news.newstext %></p>
-            </div>
+            <p style="font-size: 25px; color: white;"><%= news.newstext %></p>
         </div>
-        <div style="flex: 0.4;">
-            <!-- Sağdaki dar div -->
-            <div style="display: flex; justify-content: center;position: fixed;">
-                <div style="width: 80%; margin-top: 20%">
-                    <% for (let i = 0; i < otherNews.length; i++) { %>
-                        <!-- Diğer haberlerin kartları -->
-                        <form class="card-form" action="/newsDetail/<%= otherNews[i]['id'] %>">
-                            <div class="card" style="margin-bottom: 10px; border: 1px solid #ccc; border-radius: 8px; background-color: rgb(63, 63, 63);">
-                                <div style="width: 100%; height: 200px; overflow: hidden; position: relative;">
-                                    <img src="<%= otherNews[i]['image'] %>" class="d-block" alt="" style="width: 100%;">
-                                    <h5 class="card-title" style="position: absolute; bottom: 0; left: 0; right: 0; padding: 10px; margin: 0; color: white; font-size: 15px; background-color: rgba(120, 119, 119, 0.486);">
-                                        <%= otherNews[i]['topic'] %>
-                                    </h5>
-                                </div>
-                            </div>
-                        </form>
-                    <% } %>
-                </div>
-            </div>
+        <div class="action-buttons" style="margin-top: 20px;">
+            <% if (user) { %>
+                <form id="likeForm" method="POST">
+                    <input type="hidden" name="newsId" value="<%= news.idnews %>">
+                    <button type="submit" class="like-button <%= hasLiked ? 'liked' : '' %>">Like</button>
+                </form>
+                <form id="dislikeForm" method="POST">
+                    <input type="hidden" name="newsId" value="<%= news.idnews %>">
+                    <button type="submit" class="dislike-button <%= hasDisliked ? 'disliked' : '' %>">Dislike</button>
+                </form>
+            <% } %>
+            <button class="share-button">Paylaş</button>
+        </div>
+        <div class="other-news" style="width: 100%; margin-top: 20px;">
+            <!-- Diğer haberlerin kartları -->
+            <% for (let i = 0; i < otherNews.length; i++) { %>
+                <form class="card-form" action="/newsDetail/<%= otherNews[i]['id'] %>" style="width: 100%;">
+                    <div class="card" style="margin-bottom: 10px; border: 1px solid #ccc; border-radius: 8px; background-color: rgb(63, 63, 63);">
+                        <div style="width: 100%; height: auto; overflow: hidden; position: relative;">
+                            <img src="<%= otherNews[i]['image'] %>" class="d-block" alt="" style="width: 100%;">
+                            <h5 class="card-title" style="position: absolute; bottom: 0; left: 0; right: 0; padding: 10px; margin: 0; color: white; font-size: 15px; background-color: rgba(120, 119, 119, 0.486);">
+                                <%= otherNews[i]['topic'] %>
+                            </h5>
+                        </div>
+                    </div>
+                </form>
+            <% } %>
         </div>
     </div>
     <script>
@@ -174,14 +154,18 @@
                     alert('An error occurred while disliking the news.');
                 });
             });
-        });
 
-        // Her kartın formunu al
-        var cardForms = document.querySelectorAll('.card-form');
-        cardForms.forEach(function(form) {
-            form.addEventListener('click', function() {
-                var url = form.getAttribute('action');
-                window.location.href = url;
+            $('.share-button').click(function() {
+                alert('Paylaş butonuna tıklandı!');
+            });
+
+            // Her kartın formunu al
+            var cardForms = document.querySelectorAll('.card-form');
+            cardForms.forEach(function(form) {
+                form.addEventListener('click', function() {
+                    var url = form.getAttribute('action');
+                    window.location.href = url;
+                });
             });
         });
     </script>
