@@ -31,9 +31,17 @@
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <button id="loginButton" type="button" class="btn btn-primary"><img src="./public/loginLogo.svg"></button>
-                </li>
+                <% if (user) { %>
+                    <li class="nav-item">
+                        <form action="/signOut" method="POST">
+                            <button type="submit" class="btn btn-primary" data-translate="SignOut">Çıkış Yap</button>
+                        </form>
+                    </li>
+                <% } else { %>
+                    <li class="nav-item">
+                        <button id="loginButton" type="button" class="btn btn-primary" data-translate="LogIn" style="width: 125px;">Giriş Yap</button>
+                    </li>
+                <% } %>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-bell"></i>
