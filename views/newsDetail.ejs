@@ -118,9 +118,9 @@
                     Paylaş
                 </button>
                 <div class="dropdown-menu" aria-labelledby="shareDropdown">
-                    <a class="dropdown-item" href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent(request.protocol + '://' + request.get('host') + request.originalUrl) %>" target="_blank">Facebook</a>
-                    <a class="dropdown-item" href="https://api.whatsapp.com/send?text=<%= encodeURIComponent(news.topic + ' ' + request.protocol + '://' + request.get('host') + request.originalUrl) %>" target="_blank">WhatsApp</a>
-                    <a class="dropdown-item" href="https://twitter.com/intent/tweet?url=<%= encodeURIComponent(request.protocol + '://' + request.get('host') + request.originalUrl) %>&text=<%= encodeURIComponent(news.topic) %>" target="_blank">Twitter</a>
+                    <a class="dropdown-item" href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent(req.protocol + '://' + req.get('host') + req.originalUrl) %>" target="_blank">Facebook</a>
+                    <a class="dropdown-item" href="https://api.whatsapp.com/send?text=<%= encodeURIComponent(news.topic + ' ' + req.protocol + '://' + req.get('host') + req.originalUrl) %>" target="_blank">WhatsApp</a>
+                    <a class="dropdown-item" href="https://twitter.com/intent/tweet?url=<%= encodeURIComponent(req.protocol + '://' + req.get('host') + req.originalUrl) %>&text=<%= encodeURIComponent(news.topic) %>" target="_blank">Twitter</a>
                 </div>
             </div>
         </div>

@@ -178,7 +178,7 @@ app.get('/newsDetail', (req, res) => {
                             user: req.session.user, 
                             hasLiked, 
                             hasDisliked, 
-                            request: req 
+                            req 
                         });
                     });
                 });
@@ -189,12 +189,13 @@ app.get('/newsDetail', (req, res) => {
                     user: null, 
                     hasLiked: false, 
                     hasDisliked: false, 
-                    request: req 
+                    req 
                 });
             }
         });
     });
 });
+
 
 
 app.post('/like', isAuthenticated, (req, res) => {
