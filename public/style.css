@@ -61,7 +61,7 @@ body{
     overflow-y: auto;  /* Taşan içeriği kaydırma */
     right: 0; /* Dropdown menünün sağa hizalanmasını sağlamak için */
     left: auto; /* Soldan hizalamayı iptal etmek için */
-    transform: translateX(50%); /* İçeriği sola kaydır */
+    transform: translateX(30%); /* İçeriği sola kaydır */
     white-space: nowrap; 
 }
 
