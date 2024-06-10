@@ -172,31 +172,15 @@ app.get('/newsDetail', (req, res) => {
                         const hasLiked = likeResults.length > 0;
                         const hasDisliked = dislikeResults.length > 0;
 
-                        res.render('newsDetail', { 
-                            news, 
-                            otherNews: otherResults, 
-                            user: req.session.user, 
-                            hasLiked, 
-                            hasDisliked, 
-                            req 
-                        });
+                        res.render('newsDetail', { news, otherNews: otherResults, user: req.session.user, hasLiked, hasDisliked });
                     });
                 });
             } else {
-                res.render('newsDetail', { 
-                    news, 
-                    otherNews: otherResults, 
-                    user: null, 
-                    hasLiked: false, 
-                    hasDisliked: false, 
-                    req 
-                });
+                res.render('newsDetail', { news, otherNews: otherResults, user: null, hasLiked: false, hasDisliked: false });
             }
         });
     });
 });
-
-
 
 app.post('/like', isAuthenticated, (req, res) => {
     const userId = req.session.user.id;

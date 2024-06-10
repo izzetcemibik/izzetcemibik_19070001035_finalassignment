@@ -69,8 +69,8 @@
                         <span class="badge rounded-pill badge-notification bg-danger">1</span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#">ABD Enflasyonu Belli Oldu</a>
-                        <a class="dropdown-item" href="#">Ultraviole Işınlar Neredeyse Kolojenimizi Bitiriyor</a>
+                        <a class="dropdown-item" href="#">ABD Enfilasyonu Belli Oldu</a>
+                        <a class="dropdown-item" href="#">Ultraviole Işınlar Nerdeyse Kolojenimiz Bitiriyor</a>
                         <a class="dropdown-item" href="#">Yaris Hybrid ve Yaris Cross Satışa Sunuldu</a>
                     </div>
                 </li>
@@ -114,14 +114,7 @@
                         <button type="submit" style="margin-bottom: 5px;" class="dislike-button <%= hasDisliked ? 'disliked' : '' %>">Dislike</button>
                     </form>
                 <% } %>
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="shareDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Paylaş
-                </button>
-                <div class="dropdown-menu" aria-labelledby="shareDropdown">
-                    <a class="dropdown-item" href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent(req.protocol + '://' + req.get('host') + req.originalUrl) %>" target="_blank">Facebook</a>
-                    <a class="dropdown-item" href="https://api.whatsapp.com/send?text=<%= encodeURIComponent(news.topic + ' ' + req.protocol + '://' + req.get('host') + req.originalUrl) %>" target="_blank">WhatsApp</a>
-                    <a class="dropdown-item" href="https://twitter.com/intent/tweet?url=<%= encodeURIComponent(req.protocol + '://' + req.get('host') + req.originalUrl) %>&text=<%= encodeURIComponent(news.topic) %>" target="_blank">Twitter</a>
-                </div>
+                <button>Paylaş</button>
             </div>
         </div>
 
