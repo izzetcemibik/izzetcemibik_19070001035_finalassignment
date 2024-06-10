@@ -87,17 +87,15 @@
         <div class="row mt-4">
             <% results.forEach(result => { %>
                 <div class="col-md-4 mb-4">
-                    <a href="/newsDetail?id=<%= result.idnews %>" class="btn btn-primary">
+                    <a href="/newsDetail?id=<%= result.idnews %>">
                         <div class="card">
                             <img src="<%= result.image %>" class="card-img-top" alt="<%= result.topic %>">
                             <div class="card-body">
                                 <h5 class="card-title"><%= result.topic %></h5>
                                 <p class="card-text"><%= result.category %></p>
-                                <a href="/newsDetail?id=<%= result.idnews %>" class="btn btn-primary">Read More</a>
                             </div>
                         </div>
                     </a>
-                    
                 </div>
             <% }) %>
         </div>
