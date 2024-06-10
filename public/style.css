@@ -55,3 +55,8 @@ body{
 .card-link:focus .card-text {
     color: black;
 }
+
+.dropdown-menu {
+    max-height: 200px; /* Maksimum yüksekliği belirleyin */
+    overflow-y: auto;  /* Taşan içeriği kaydırma */
+}
