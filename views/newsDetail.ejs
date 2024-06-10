@@ -114,7 +114,16 @@
                         <button type="submit" style="margin-bottom: 5px;" class="dislike-button <%= hasDisliked ? 'disliked' : '' %>">Dislike</button>
                     </form>
                 <% } %>
-                <button>Paylaş</button>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="shareDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Paylaş
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="shareDropdown">
+                        <a class="dropdown-item" href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent(request.protocol + '://' + request.get('host') + request.originalUrl) %>" target="_blank">Facebook</a>
+                        <a class="dropdown-item" href="https://api.whatsapp.com/send?text=<%= encodeURIComponent(news.topic + ' ' + request.protocol + '://' + request.get('host') + request.originalUrl) %>" target="_blank">WhatsApp</a>
+                        <a class="dropdown-item" href="https://twitter.com/intent/tweet?url=<%= encodeURIComponent(request.protocol + '://' + request.get('host') + request.originalUrl) %>&text=<%= encodeURIComponent(news.topic) %>" target="_blank">Twitter</a>
+                    </div>
+                </div>
             </div>
         </div>
 
