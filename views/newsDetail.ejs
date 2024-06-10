@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Detail</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-color: rgb(41, 41, 41);
+        }
+        .navbar {
+            background-color: rgb(41, 41, 41);
+        }
+        .fixed-buttons button {
+            width: 50px;
+            height: 50px;
+            border-radius: 20px;
+            border: none;
+            background-color: rgb(63, 63, 63);
+        }
+        .liked {
+            color: blue;
+        }
+        .disliked {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="/" style="display: flex; align-items: center;">
+            <img src="/msn_logo_icon_181375.png" alt="Logo" style="height: 30px;">
+            <h1 style="margin: 0; margin-left: 5px; font-size: 25px">MSN</h1>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto"></ul>
+            <div class="navbar-center">
+                <form class="form-inline" action="/search" method="POST">
+                    <div class="d-flex">
+                        <input name="searchTerm" class="form-control mr-sm-0" style="border-top-right-radius: 0; border-bottom-right-radius: 0" type="search" placeholder="Ara" aria-label="Ara">
+                        <button class="btn my-2 my-sm-0" style="border-top-left-radius: 0; border-bottom-left-radius: 0; background-color:rgb(0, 166, 255)" type="submit" data-translate="Ara">Ara</button>
+                    </div>
+                </form>
+            </div>
+            <ul class="navbar-nav ml-auto">
+                <% if (user) { %>
+                    <li class="nav-item">
+                        <form action="/signOut" method="POST">
+                            <button type="submit" class="btn btn-primary" data-translate="SignOut">Çıkış Yap</button>
+                        </form>
+                    </li>
+                <% } else { %>
+                    <li class="nav-item">
+                        <button id="loginButton" type="button" class="btn btn-primary" data-translate="LogIn" style="width: 125px;">Giriş Yap</button>
+                    </li>
+                <% } %>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-bell"></i>
+                        <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg"><path d="M14 3a8.5 8.5 0 018.5 8.25v4.86l1.41 3.65c.04.1.07.2.08.3l.01.16c0 .66-.5 1.2-1.15 1.27l-.13.01H17.5a3.5 3.5 0 01-7 .2v-.2H5.27a1.28 1.28 0 01-1.23-1.62l.04-.12L5.5 16.1v-4.6C5.5 6.8 9.3 3 14 3zm2 18.65v-.15h-4a2 2 0 004 .15zM14 4.5a7 7 0 00-7 6.76v4.99c0 .07 0 .13-.02.19l-.03.09L5.6 20h16.8l-1.35-3.48a.75.75 0 01-.04-.17V11.5a7 7 0 00-7.01-7z"></path></svg>
+                        <span class="badge rounded-pill badge-notification bg-danger">1</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink" style="max-height: 200px; overflow-y: auto;">
+                        <a class="dropdown-item" href="#">ABD Enflasyonu Belli Oldu</a>
+                        <a class="dropdown-item" href="#">Ultraviole Işınlar Neredeyse Kolajenimizi Bitiriyor</a>
+                        <a class="dropdown-item" href="#">Yaris Hybrid ve Yaris Cross Satışa Sunuldu</a>
+                        <!-- Daha fazla içerik ekleyin -->
+                    </div>
+                </li>
+                
+                <li class="nav-item">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#settingsModal" data-translate="Ayarlar">Ayarlar</button>
+                    <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="settingsModalLabel">Ayarlar</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <select id="languageSelect" class="form-control">
+                                        <option value="tr">Türkçe</option>
+                                        <option value="en">English</option>
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-translate="Kapat">Kapat</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div style="display: flex; flex-direction: row; margin-top: 20px">
+        <div class="fixed-buttons" style="margin-top: 20px; width: 20vh; display: flex; justify-content: center; top: 20px;">
+            <div style="display: flex; flex-direction: column; align-items: center; position: fixed; margin-top: 15%">
+                <% if (user) { %>
+                    <form id="likeForm" method="POST">
+                        <input type="hidden" name="newsId" value="<%= news.idnews %>">
+                        <button type="submit" style="margin-bottom: 5px;" class="like-button <%= hasLiked ? 'liked' : '' %>">Like</button>
+                    </form>
+                    <form id="dislikeForm" method="POST">
+                        <input type="hidden" name="newsId" value="<%= news.idnews %>">
+                        <button type="submit" style="margin-bottom: 5px;" class="dislike-button <%= hasDisliked ? 'disliked' : '' %>">Dislike</button>
+                    </form>
+                <% } %>
+                <button>Paylaş</button>
+            </div>
+        </div>
+
+        <div style="flex: 1; padding-right: 20px; padding-left: 20px">
+            <!-- Sol taraftaki dar div -->
+            <div>
+                <!-- Haberin başlığı ve resmi -->
+                <h2 style="color: white;"><%= news.topic %></h2>
+                <img src="<%= news.image %>" alt="<%= news.topic %>">
+            </div>
+            <!-- Haber metni -->
+            <div>
+                <p style="font-size: 25px; color: white;"><%= news.newstext %></p>
+            </div>
+        </div>
+        <div style="flex: 0.4;">
+            <!-- Sağdaki dar div -->
+            <div style="display: flex; justify-content: center;position: fixed;">
+                <div style="width: 80%; margin-top: 20%">
+                    <% for (let i = 0; i < otherNews.length; i++) { %>
+                        <!-- Diğer haberlerin kartları -->
+                        <form class="card-form" action="/newsDetail/<%= otherNews[i]['id'] %>">
+                            <div class="card" style="margin-bottom: 10px; border: 1px solid #ccc; border-radius: 8px; background-color: rgb(63, 63, 63);">
+                                <div style="width: 100%; height: 200px; overflow: hidden; position: relative;">
+                                    <img src="<%= otherNews[i]['image'] %>" class="d-block" alt="" style="width: 100%;">
+                                    <h5 class="card-title" style="position: absolute; bottom: 0; left: 0; right: 0; padding: 10px; margin: 0; color: white; font-size: 15px; background-color: rgba(120, 119, 119, 0.486);">
+                                        <%= otherNews[i]['topic'] %>
+                                    </h5>
+                                </div>
+                            </div>
+                        </form>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#likeForm').submit(function(e) {
+                e.preventDefault();
+                $.post('/like', $(this).serialize(), function(response) {
+                    $('.like-button').addClass('liked');
+                    $('.dislike-button').removeClass('disliked');
+                }).fail(function() {
+                    alert('An error occurred while liking the news.');
+                });
+            });
+
+            $('#dislikeForm').submit(function(e) {
+                e.preventDefault();
+                $.post('/dislike', $(this).serialize(), function(response) {
+                    $('.dislike-button').addClass('disliked');
+                    $('.like-button').removeClass('liked');
+                }).fail(function() {
+                    alert('An error occurred while disliking the news.');
+                });
+            });
+        });
+
+        // Her kartın formunu al
+        var cardForms = document.querySelectorAll('.card-form');
+        cardForms.forEach(function(form) {
+            form.addEventListener('click', function() {
+                var url = form.getAttribute('action');
+                window.location.href = url;
+            });
+        });
+    </script>
+</body>
+</html>
