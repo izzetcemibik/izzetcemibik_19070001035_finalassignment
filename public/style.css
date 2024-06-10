@@ -45,3 +45,13 @@ body{
     display: flex;
     align-items: center;
 }
+
+.card-title, .card-text {
+    color: black;
+}
+.card-link:hover .card-title, 
+.card-link:hover .card-text, 
+.card-link:focus .card-title, 
+.card-link:focus .card-text {
+    color: black;
+}
