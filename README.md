@@ -15,7 +15,7 @@ Web Project Link: https://izzetcemibik19070001035final.azurewebsites.net  (The l
 ### Tables 2: users
 ### Columns
 1. id (Primary Key)
-2. firs_name
+2. first_name
 3. last_name
 4. password
 5. country
