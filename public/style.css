@@ -8,27 +8,27 @@ body{
     border-top: 1px solid #ccc;
 }
 .general-div {
-    width: 100%; /* Genel div'in genişliği */
-    background-color: #f4f4f2; /* Genel div'in arka plan rengi */
-    padding: 20px; /* Genel div'in iç içe geçme miktarı */
+    width: 100%; 
+    background-color: #f4f4f2; 
+    padding: 20px; 
 }
 
 .narrow-div {
-    max-width: 1200px; /* Dar div'in maksimum genişliği */
-    margin: 0 auto; /* Dar div'i merkezlemek için */
+    max-width: 1200px; 
+    margin: 0 auto; 
 }
 
 .bar {
-    display: flex; /* Menü öğelerini yatay düzende göster */
+    display: flex; 
 }
 
 .menu-item {
-    flex: 1 0 10%; /* Menü öğelerini eşit genişlikte sırala */
-    padding: 5px; /* Menü öğelerinin iç boşluğu */
-    text-align: center; /* Metni ortala */
-    margin: 2px; /* Menü öğeleri arasındaki boşluk */
-    cursor: pointer; /* Menü öğelerine fare imleci ekleyin */
-    background-color: #f4f4f2; /* Menü öğelerinin arka plan rengi */
+    flex: 1 0 10%; 
+    padding: 5px; 
+    text-align: center; 
+    margin: 2px;
+    cursor: pointer; 
+    background-color: #f4f4f2; 
 }
 .slider {
     display: flex;
@@ -57,11 +57,11 @@ body{
 }
 
 .dropdown-menu {
-    max-height: 200px; /* Maksimum yüksekliği belirleyin */
-    overflow-y: auto;  /* Taşan içeriği kaydırma */
-    right: 0; /* Dropdown menünün sağa hizalanmasını sağlamak için */
-    left: auto; /* Soldan hizalamayı iptal etmek için */
-    transform: translateX(30%); /* İçeriği sola kaydır */
+    max-height: 200px; 
+    overflow-y: auto;  
+    right: 0; 
+    left: auto; 
+    transform: translateX(30%); 
     white-space: nowrap; 
 }
 

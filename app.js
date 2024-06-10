@@ -261,9 +261,3 @@ app.listen(PORT, (error) => {
         console.log("Error occurred, server can't start", error); 
 });
 
-
-/*
-    host: 'localhost',
-    user: 'root',
-    password: '12345Izo',
-    database: 'izzetcemibik_19070001035_finalassignment'*/
